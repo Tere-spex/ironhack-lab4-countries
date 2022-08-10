@@ -12,36 +12,33 @@
   </div>
   <div v-if="error" class="text-red-600">{{ error }}</div>
   <section class="grid grid-cols-3">
-    <div class="bg-green-200" v-if="countries">
+    <div class="bg-green-200 ml-24" v-if="countries">
       <div class="flex-col" v-for="countrie in countries" :key="countrie.name.official"> <!--la url la utilizare como identificador unico -->
         <div class="bg-blue-100 p-5 m-5">
           <p class="text-gray-500 text-sm">{{countrie.name.common}}</p>
-          <img src="" :alt="countrie.name.common">
+          <!-- <img src="" :alt="countrie.name.common"> -->
         </div>
       </div>
     </div>
-
-    <div class="col-span-2 bg-blue-600 p-5" v-for="countrie in countries" :key="countrie.name.official"> 
-      <p class="text-gray-800 text-4xl font-bold">{{countrie.name.common}}</p>
-      <p>Capital {{ countrie.capital[0] }}</p>
-      <p>Area {{countrie.area}}</p>
-      <div class="flex gap-5">
-        <div>
-          <p>Borders</p>
-        </div>
-        <div class="" v-for="border in countrie.borders" :key="border">
-          <p>{{border}}</p>
-        </div>
-      </div>
-    </div>
+    <Details v-for="countrie in countries" :key="countrie.name.official"
+      :name="countrie.name.common"
+      :capital="countrie.capital[0]"
+      :area="countrie.area"
+      :id="countrie._id"
+      :borders="countrie.borders"
+    />
   </section>
 
 </template>
 
 <script>
 import axios from "axios";
+import Details from "../components/Detail.vue";
 export default {
     name: "Countries",
+    components: { 
+      Details 
+    },
     data() {
         return {
             countries: null,
@@ -72,7 +69,6 @@ export default {
     mounted() {
         this.getCountries();
     },
-    // components: { Details }
 }
 </script>
 
