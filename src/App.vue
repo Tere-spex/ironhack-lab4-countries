@@ -1,5 +1,4 @@
 <template>
-  <h1 class="text-2xl font-bold text-emerald-600">aplicando tailwind</h1>
   <nav>
     <RouterLink class="link" :to="`/`">Home</RouterLink>
     <RouterLink class="link" :to="`/countries`">Countries</RouterLink>
