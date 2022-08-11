@@ -11,34 +11,27 @@
   <div v-if="error" class="text-red-600">{{ error }}</div>
   <section class="grid grid-cols-3">
     <div class="bg-gray-200 overflow-scroll h-screen" v-if="countries">
-      <div class="flex-col" v-for="countrie in countries" :key="countrie.alpha2Code">
+      <div class="flex-col" v-for="countrie in countries" :key="countrie.alpha3Code">
         <div class="bg-white p-5 m-2 flex flex-col justify-center items-center">
           <p class="text-gray-600 text-md">
-            <RouterLink :to="`/countries/countrie/${countrie.alpha2Code}`">
+            <RouterLink :to="`/countries/countrie/${countrie.alpha3Code}`">
               <p>{{countrie.name.common}}</p>
             </RouterLink>
           </p>
           <!-- banderas -->
           <div v-for="flag in countriesflag.data" :key="flag.name"> 
             <div v-if="flag.name === countrie.name.common">
-              <RouterLink :to="`/countries/countrie/${countrie.alpha2Code}`">
+              <RouterLink :to="`/countries/countrie/${countrie.alpha3Code}`">
                 <img class="w-28 mt-5" :src="flag.flag" :alt="flag.name"/>
               </RouterLink>
-              <!-- {{flag.name}} -->
             </div>
           </div>
         </div>
       </div>
     </div>
-    
-       <Countrie v-for="countrie in countries" :key="countrie.alpha2Code"
-      :name="countrie.name.common"
-      :capital="countrie.capital[0]"
-      :area="countrie.area"
-      :id="countrie.alpha2Code"
-      :borders="countrie.borders"
-    />
+    <Countrie />
   </section>
+  <!-- <RouterView /> -->
 </template>
 
 <script>
@@ -58,35 +51,38 @@ export default {
         };
     },
     methods: {
-        //DATOS COUNTRIES
-        async getCountries() {
-            this.loading = true; //2.Estado de loading para cuando los datos se estan cargando.
-            try {
-                const countries = await axios("https://ih-countries-api.herokuapp.com/countries/");
-                this.countries = countries.data;
-                // console.log(countries.data);
-            }
-            catch (error) {
-                this.error = error;
-            }
-            finally {
-                this.loading = false;
-            }
-        },
-        //IMAGENES
-        async getFlag() {
-            this.loading = true; //2.Estado de loading para cuando los datos se estan cargando.
-            try {
-                const countriesflag = await axios("https://countriesnow.space/api/v0.1/countries/flag/images");
-                this.countriesflag = countriesflag.data;
-            }
-            catch (error) {
-                this.error = error;
-            }
-            finally {
-                this.loading = false;
-            }
-        },
+      //DATOS COUNTRIES
+      async getCountries() {
+          this.loading = true; //2.Estado de loading para cuando los datos se estan cargando.
+          try {
+              const countries = await axios("https://ih-countries-api.herokuapp.com/countries/");
+              this.countries = countries.data;
+              // console.log(countries.data);
+          }
+          catch (error) {
+              this.error = error;
+          }
+          finally {
+              this.loading = false;
+          }
+      },
+      //IMAGENES
+      async getFlag() {
+          this.loading = true; //2.Estado de loading para cuando los datos se estan cargando.
+          try {
+              const countriesflag = await axios("https://countriesnow.space/api/v0.1/countries/flag/images");
+              this.countriesflag = countriesflag.data;
+          }
+          catch (error) {
+              this.error = error;
+          }
+          finally {
+              this.loading = false;
+          }
+      },
+      getId(id){
+        console.log(id)
+      }
     },
     mounted() {
         this.getCountries();

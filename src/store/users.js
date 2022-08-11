@@ -5,12 +5,13 @@ export const useUsersStore = defineStore('users', {
     return { 
         name: 'Michael',
         lastName: 'Araya',
-        password: '1234',
+
     }
   },
   actions: {
     userInfo() {
-      this.userName + this.lastName;
+      const fulname = this.name + " " + this.lastName;
+      return fulname
     },
   },
 })
