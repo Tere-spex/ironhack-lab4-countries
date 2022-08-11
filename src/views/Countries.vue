@@ -1,8 +1,6 @@
 <template>
-  <div class="uppercase font-bold text-center m-5">
-    <h1>
-      Countries
-    </h1>
+  <div class="uppercase font-bold m-5">
+    <h1 class="text-4xl font-extrabold text-gray-800">Countries</h1>
   </div>
   <div class="text-center" v-if="loading"> <!--3.Estado de loading para cuando los datos se estan cargando.-->
    <svg role="status" class="inline mr-2 w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -12,48 +10,61 @@
   </div>
   <div v-if="error" class="text-red-600">{{ error }}</div>
   <section class="grid grid-cols-3">
-    <div class="bg-green-200 ml-24" v-if="countries">
-      <div class="flex-col" v-for="countrie in countries" :key="countrie.name.official"> <!--la url la utilizare como identificador unico -->
-        <div class="bg-blue-100 p-5 m-5">
-          <p class="text-gray-500 text-sm">{{countrie.name.common}}</p>
-          <!-- <img src="" :alt="countrie.name.common"> -->
+    <div class="bg-gray-200" v-if="countries">
+      <div class="flex-col" v-for="countrie in countries" :key="countrie.alpha2Code">
+        <div class="bg-white p-5 m-2">
+          <p class="text-gray-600 text-md">
+            <RouterLink :to="`/countries/countrie/${countrie.alpha2Code}`">
+              <p>{{countrie.name.common}}</p>
+            </RouterLink>
+          </p>
+          <!-- banderas -->
+          <div v-for="flag in countriesflag.data" :key="flag.name"> 
+            <div v-if="flag.name === countrie.name.common">
+              <RouterLink :to="`/countries/countrie/${countrie.alpha2Code}`">
+                <img class="w-28" :src="flag.flag" :alt="flag.name"/>
+              </RouterLink>
+              <!-- {{flag.name}} -->
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <Details v-for="countrie in countries" :key="countrie.name.official"
+    
+       <Countrie v-for="countrie in countries" :key="countrie.alpha2Code"
       :name="countrie.name.common"
       :capital="countrie.capital[0]"
       :area="countrie.area"
-      :id="countrie._id"
+      :id="countrie.alpha2Code"
       :borders="countrie.borders"
     />
   </section>
-
 </template>
 
 <script>
 import axios from "axios";
-import Details from "../components/Detail.vue";
+import Countrie from "../components/Countrie.vue";
 export default {
     name: "Countries",
     components: { 
-      Details 
+      Countrie, 
     },
     data() {
         return {
             countries: null,
+            countriesflag: null,//datos de otra api para obtener las banderas
             loading: false,
             error: "",
         };
     },
     methods: {
-        //FORMA 1.2 AXIOS ASYNC AWAIT
+        //DATOS COUNTRIES
         async getCountries() {
             this.loading = true; //2.Estado de loading para cuando los datos se estan cargando.
             try {
                 const countries = await axios("https://ih-countries-api.herokuapp.com/countries/");
                 this.countries = countries.data;
-                console.log(countries.data);
+                // console.log(countries.data);
             }
             catch (error) {
                 this.error = error;
@@ -62,12 +73,24 @@ export default {
                 this.loading = false;
             }
         },
-        getId(url) {
-            return url.split("/").reverse()[1];
+        //IMAGENES
+        async getFlag() {
+            this.loading = true; //2.Estado de loading para cuando los datos se estan cargando.
+            try {
+                const countriesflag = await axios("https://countriesnow.space/api/v0.1/countries/flag/images");
+                this.countriesflag = countriesflag.data;
+            }
+            catch (error) {
+                this.error = error;
+            }
+            finally {
+                this.loading = false;
+            }
         },
     },
     mounted() {
         this.getCountries();
+        this.getFlag();
     },
 }
 </script>

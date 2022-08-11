@@ -1,7 +1,7 @@
 <template>
-  <nav>
-    <RouterLink class="link" :to="`/`">Home</RouterLink>
-    <RouterLink class="link" :to="`/countries`">Countries</RouterLink>
+  <nav class="flex justify-center bg-gray-300 text-gray-800 font-bold p-5 gap-5">
+    <RouterLink :to="`/`">HOME</RouterLink>
+    <RouterLink :to="`/countries`">COUNTRIES</RouterLink>
   </nav>
   <RouterView />
 </template>
@@ -10,16 +10,4 @@
 </script>
 
 <style scoped>
-nav{
-  display: flex;
-  justify-content: center;
-  background-color: rgb(235, 235, 235);
-  padding: 25px;
-}
-.link{
-  color: rgb(114, 114, 114);
-  text-decoration: none;
-  font-weight: bold;
-  margin: 25px;
-}
 </style>
