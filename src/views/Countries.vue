@@ -10,9 +10,9 @@
   </div>
   <div v-if="error" class="text-red-600">{{ error }}</div>
   <section class="grid grid-cols-3">
-    <div class="bg-gray-200" v-if="countries">
+    <div class="bg-gray-200 overflow-scroll h-screen" v-if="countries">
       <div class="flex-col" v-for="countrie in countries" :key="countrie.alpha2Code">
-        <div class="bg-white p-5 m-2">
+        <div class="bg-white p-5 m-2 flex flex-col justify-center items-center">
           <p class="text-gray-600 text-md">
             <RouterLink :to="`/countries/countrie/${countrie.alpha2Code}`">
               <p>{{countrie.name.common}}</p>
@@ -22,7 +22,7 @@
           <div v-for="flag in countriesflag.data" :key="flag.name"> 
             <div v-if="flag.name === countrie.name.common">
               <RouterLink :to="`/countries/countrie/${countrie.alpha2Code}`">
-                <img class="w-28" :src="flag.flag" :alt="flag.name"/>
+                <img class="w-28 mt-5" :src="flag.flag" :alt="flag.name"/>
               </RouterLink>
               <!-- {{flag.name}} -->
             </div>
