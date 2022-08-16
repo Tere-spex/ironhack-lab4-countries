@@ -15,16 +15,16 @@
           <span>Capital</span>
           <p class="text-gray-600 text-md">{{countrie.capital[0]}}</p>
          </div>
-         <hr width="75%">
+         <hr>
          <div class="flex gap-32">
           <span>Area</span>
           <p class="text-gray-600 text-md">{{countrie.area}} km²</p>
          </div>
-         <hr width="75%">
+         <hr>
          <div class="flex gap-32">
           <div class="flex flex-col" v-if="countrie.borders">
+            <span>Borders</span>
             <div v-for="border in countrie.borders" :key="border" class="text-gray-600 text-md">
-              <span>Borders</span>
               <p>{{border}}</p></div>
           </div>
          </div>
